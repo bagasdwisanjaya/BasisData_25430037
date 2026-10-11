@@ -1,17 +1,18 @@
-# Dokumen Kebutuhan Data - Toko Daring Sentosa RP
+# Dokumen Kebutuhan Data - Toko Daring Sentosa BDS
 
-**Nama Praktikan:** Rizki Pratama  
-**NIM:** 2301010055  
-**Kelas:** Ilmu Komputer - Semester 3  
+**Nama Praktikan:** Bagas Dwi Sanjaya  
+**NIM:** 25430037  
+**Kelas:** Kelas B, Ilmu Komputer - Semester 3  
 **Mata Kuliah:** Praktikum Basis Data (Semester 3)  
 **Tema Proyek:** Toko Daring (Kode: `toko`)  
 **Milestone:** 2 - Dokumen Kebutuhan Data Proyek Mandiri  
+**Tahun Akademik:** 2026/2027  
 
 ---
 
 ## 1. Latar Belakang dan Aktivitas Organisasi
 
-**Toko Daring Sentosa RP** adalah entitas bisnis ritel berbasis digital yang melayani pemesanan, pembelian, dan pengiriman perlengkapan komputasi, aksesori teknologi, serta perlengkapan belajar mahasiswa secara daring. Dalam operasionalnya, pelanggan dapat menjelajahi katalog produk, memasukkan produk ke keranjang belanja, melakukan pemesanan (*checkout*), memilih metode pembayaran, serta memantau status pengiriman paket hingga barang diterima.
+**Toko Daring Sentosa BDS** adalah entitas bisnis ritel berbasis digital yang melayani pemesanan, pembelian, dan pengiriman perlengkapan komputasi, aksesori teknologi, serta perlengkapan belajar mahasiswa secara daring. Dalam operasionalnya, pelanggan dapat menjelajahi katalog produk, memasukkan produk ke keranjang belanja, melakukan pemesanan (*checkout*), memilih metode pembayaran, serta memantau status pengiriman paket hingga barang diterima.
 
 Aktivitas utama organisasi meliputi:
 
@@ -52,18 +53,18 @@ Aktivitas utama organisasi meliputi:
 
 ```text
 ========================================================================================
-                                 TOKO DARING SENTOSA RP
-                         Jl. Melati No. 55, Kota Metro, Lampung
-                            Surel: support@tokosentosarp.co.id
+                                 TOKO DARING SENTOSA BDS
+                         Jl. Melati No. 37, Kota Metro, Lampung
+                            Surel: support@tokosentosabds.co.id
 ========================================================================================
-INVOICE PEMESANAN: ORD-20261011-0055                    TANGGAL: 11/10/2026 14:35:10
+INVOICE PEMESANAN: ORD-20261011-0037                    TANGGAL: 11/10/2026 14:35:10
 STATUS: LUNAS                                           METODE BAYAR: QRIS / E-WALLET
 ----------------------------------------------------------------------------------------
 DATA PEMESAN:
-ID Pelanggan : CUST-0055                                Telepon : 0812-7788-5501
-Nama         : Rizki Pratama                            Email   : rizki.client@contoh.id
-Alamat Kirim : Jl. Cendekia No. 12, Iringmulyo, Kota Metro, Lampung (Kode Pos: 34112)
-Kurir        : JNE Express (Reguler)                    No. Resi: JNE-992384755
+ID Pelanggan : CUST-0037                                Telepon : 0812-7788-0037
+Nama         : Bagas Dwi Sanjaya                        Email   : bagas.bds@contoh.id
+Alamat Kirim : Jl. Cendekia No. 37, Iringmulyo, Kota Metro, Lampung (Kode Pos: 34112)
+Kurir        : JNE Express (Reguler)                    No. Resi: JNE-992384037
 ----------------------------------------------------------------------------------------
 RINCIAN BARANG PESANAN:
 No  Kode Produk   Nama Produk                Qty   Harga Satuan     Subtotal (Rp)
@@ -85,7 +86,7 @@ Nominal Dibayar          : Rp 358.000   [STATUS: LUNAS VERIFIKASI]
 ### Pembedahan Elemen Data Dokumen Sumber
 
 1. **Elemen Kepala Dokumen (Disimpan di tabel `pesanan`)**:
-   - `no_pesanan`: `ORD-20261011-0055` (Kunci unik transaksi)
+   - `no_pesanan`: `ORD-20261011-0037` (Kunci unik transaksi)
    - `tgl_pesanan`: `2026-10-11 14:35:10`
    - `id_pelanggan`: Relasi ke pelanggan pemesan
    - `diskon_pesanan`: `7000.00` (Potongan kupon promo $P\%$)
@@ -167,11 +168,11 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 | No | Nama Kolom / Atribut | Arti & Keterangan | Format / Tipe Data | Contoh Nilai | Aturan Validasi | Penanggung Jawab (Data Steward) |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `id_pelanggan` | ID unik internal sistem pelanggan | INT, Auto Increment | `1` | Kunci Primer (PK) | Admin Penjualan |
-| 2 | `kode_pelanggan` | Kode unik kartu anggota pelanggan | VARCHAR(12) | `CUST-0055` | Unik, Format `CUST-xxxx` | Admin Penjualan |
-| 3 | `nama_pelanggan` | Nama lengkap pembeli | VARCHAR(100) | `Rizki Pratama` | Wajib diisi (NOT NULL) | Admin Penjualan |
-| 4 | `email_pelanggan` | Surel login dan notifikasi pelanggan | VARCHAR(100) | `rizki.pr@contoh.id` | Unik, Format email valid | Admin Penjualan |
-| 5 | `no_hp_pelanggan` | Nomor telepon/WhatsApp pembeli | VARCHAR(15) | `081277885501` | Data Pribadi (UU PDP), Valid | Admin Penjualan |
-| 6 | `alamat_pelanggan` | Alamat domisili tetap pelanggan | TEXT | `Jl. Cendekia No. 12, Kota Metro` | Data Pribadi, Lengkap | Admin Penjualan |
+| 2 | `kode_pelanggan` | Kode unik kartu anggota pelanggan | VARCHAR(12) | `CUST-0037` | Unik, Format `CUST-xxxx` | Admin Penjualan |
+| 3 | `nama_pelanggan` | Nama lengkap pembeli | VARCHAR(100) | `Bagas Dwi Sanjaya` | Wajib diisi (NOT NULL) | Admin Penjualan |
+| 4 | `email_pelanggan` | Surel login dan notifikasi pelanggan | VARCHAR(100) | `bagas.bds@contoh.id` | Unik, Format email valid | Admin Penjualan |
+| 5 | `no_hp_pelanggan` | Nomor telepon/WhatsApp pembeli | VARCHAR(15) | `081277880037` | Data Pribadi (UU PDP), Valid | Admin Penjualan |
+| 6 | `alamat_pelanggan` | Alamat domisili tetap pelanggan | TEXT | `Jl. Cendekia No. 37, Kota Metro` | Data Pribadi, Lengkap | Admin Penjualan |
 | 7 | `id_kategori` | ID unik internal kategori | SMALLINT, AI | `1` | Kunci Primer (PK) | Admin Katalog |
 | 8 | `nama_kategori` | Nama klasifikasi produk | VARCHAR(50) | `Aksesoris Komputer` | Wajib diisi | Admin Katalog |
 | 9 | `id_produk` | ID unik master produk | INT, Auto Increment | `10` | Kunci Primer (PK) | Petugas Gudang |
@@ -181,7 +182,7 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 | 13 | `stok_produk` | Jumlah stok barang fisik tersedia | INT | `45` | Angka bulat >= 0 (AB-09) | Petugas Gudang |
 | 14 | `stok_min_produk` | Ambang batas aman stok minimum | INT | `5` | Angka bulat >= 0 (KI-03) | Petugas Gudang |
 | 15 | `id_pesanan` | ID unik internal pesanan | INT, Auto Increment | `101` | Kunci Primer (PK) | Admin Penjualan |
-| 16 | `no_pesanan` | Nomor invoice transaksi pesanan | VARCHAR(25) | `ORD-20261011-0055` | Unik (AB-01) | Admin Penjualan |
+| 16 | `no_pesanan` | Nomor invoice transaksi pesanan | VARCHAR(25) | `ORD-20261011-0037` | Unik (AB-01) | Admin Penjualan |
 | 17 | `tgl_pesanan` | Waktu saat pemesanan dibuat | DATETIME | `2026-10-11 14:35:10` | Wajib diisi | Admin Penjualan |
 | 18 | `diskon_pesanan` | Nilai nominal potongan kupon promo | DECIMAL(12,2) | `7000.00` | Nilai promo P% = 2% (AB-05) | Admin Penjualan |
 | 19 | `ongkir_pesanan` | Biaya kirim tarif kurir ekspedisi | DECIMAL(12,2) | `15000.00` | Angka uang >= 0 | Petugas Logistik |
@@ -191,7 +192,7 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 | 23 | `no_transaksi_pembayaran` | Nomor referensi bayar perbankan | VARCHAR(50) | `PAY-20261011-77881` | Unik per transaksi bayar | Staf Keuangan |
 | 24 | `metode_pembayaran` | Kanal pembayaran yang dipilih | VARCHAR(30) | `QRIS ShopeePay` | Pilihan terverifikasi | Staf Keuangan |
 | 25 | `nominal_pembayaran` | Jumlah rupiah yang disetor | DECIMAL(12,2) | `358000.00` | Harus sama dengan total tagihan | Staf Keuangan |
-| 26 | `no_resi_pengiriman` | Nomor resi pelacakan ekspedisi | VARCHAR(40) | `JNE-992384755` | Unik resmi kurir (AB-08) | Petugas Logistik |
+| 26 | `no_resi_pengiriman` | Nomor resi pelacakan ekspedisi | VARCHAR(40) | `JNE-992384037` | Unik resmi kurir (AB-08) | Petugas Logistik |
 | 27 | `nama_ekspedisi` | Nama perusahaan kurir logistik | VARCHAR(50) | `JNE Express Reguler` | Wajib diisi | Petugas Logistik |
 | 28 | `status_pengiriman` | Status pergerakan paket barang | ENUM | `'dikirim'` | `diproses`, `dikirim`, `diterima` | Petugas Logistik |
 
@@ -203,11 +204,11 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 
 Sesuai pedoman buku praktikum Modul 2 bagian Petunjuk Tugas Mandiri:
 
-- **NIM Mahasiswa**: `2301010055`
-- **Dua Digit Terakhir NIM**: $55$
+- **NIM Mahasiswa**: `25430037`
+- **Dua Digit Terakhir NIM**: $37$
 - **Perhitungan Rumus Parameter $P$**:
   $$P = (2\text{ digit terakhir NIM} \pmod 9) + 1$$
-  $$P = (55 \pmod 9) + 1$$
+  $$P = (37 \pmod 9) + 1$$
   $$P = 1 + 1 = \mathbf{2}$$
 
 ### 9.2 Penerapan Parameter $P = 2$ pada Batasan Bisnis Proyek

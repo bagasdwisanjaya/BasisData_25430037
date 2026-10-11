@@ -1,10 +1,11 @@
 # Dokumen Kebutuhan Data - Koperasi Mahasiswa Sejahtera (Kopma)
 
-**Nama Praktikan:** Rizki Pratama  
-**NIM:** 2301010055  
-**Kelas:** Ilmu Komputer - Semester 3  
+**Nama Praktikan:** Bagas Dwi Sanjaya  
+**NIM:** 25430037  
+**Kelas:** Kelas B, Ilmu Komputer - Semester 3  
 **Mata Kuliah:** Praktikum Basis Data (Semester 3)  
 **Modul:** 2 - Analisis Kebutuhan Pengelolaan Data  
+**Tahun Akademik:** 2026/2027  
 
 ---
 
@@ -137,7 +138,7 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 | `peran_petugas` | Peran operasional petugas di Kopma | ENUM | `'kasir'` | Pilihan: `kasir`, `gudang`, `ketua` | Ketua Koperasi |
 | `id_anggota` | ID unik internal anggota koperasi | Integer, Auto Increment | `12` | Kunci Primer (PK) | Ketua Koperasi |
 | `no_anggota` | Nomor kartu tanda anggota resmi | VARCHAR(10) | `A-0457` | Format `A-xxxx`, Unik | Ketua Koperasi |
-| `nim_anggota` | Nomor Induk Mahasiswa anggota | CHAR(10) | `2301010055` | Unik, tepat 10 digit numerik | Ketua Koperasi |
+| `nim_anggota` | Nomor Induk Mahasiswa anggota | CHAR(10) | `25430037` | Unik, 10 digit numerik | Ketua Koperasi |
 | `nama_anggota` | Nama lengkap mahasiswa anggota | VARCHAR(100) | `Budi Santoso` | Wajib diisi (NOT NULL) | Ketua Koperasi |
 | `no_hp_anggota` | Nomor telepon seluler anggota | VARCHAR(15) | `081234567890` | Data Pribadi (UU PDP), Akses Terbatas | Ketua Koperasi |
 | `status_anggota` | Status keaktifan anggota koperasi | ENUM | `'aktif'` | Nilai: `aktif`, `non-aktif` | Ketua Koperasi |
@@ -182,14 +183,14 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 ## 11. Jawaban Titik Analisis Modul 2
 
 ### Titik Analisis 1
->
+
 > **Pertanyaan**: *Harga barang sudah tersimpan di data barang. Mengapa nota tetap perlu menyimpan harga saat transaksi? Hubungkan jawaban Anda dengan keluhan ketua koperasi dalam kutipan wawancara.*
 
 - **Jawaban**:  
   Harga pada data master `barang` merepresentasikan **harga jual saat ini** yang bersifat dinamis dan fluktuatif sesuai perkembangan pasar. Sebagaimana keluhan ketua koperasi (*"Harga barang sering naik, jadi kami bingung saat melihat nota lama"*), jika nota penjualan hanya mengambil harga dari tabel barang, maka ketika harga pulpen naik dari Rp4.000 menjadi Rp4.500, semua nota penjualan bulan lalu akan ikut berubah secara otomatis saat laporan dihitung ulang. Akibatnya, nilai omzet historis menjadi keliru dan pembukuan keuangan rusak. Oleh karena itu, atribut `harga_satuan_detail_penjualan` wajib disimpan permanen pada tabel transaksi sebagai **rekaman historis tak terubahkan (*immutable snapshot*)** dari harga pada detik transaksi terjadi.
 
 ### Titik Analisis 2
->
+
 > **Pertanyaan**: *Subtotal dan total adalah nilai turunan. Sebutkan satu alasan untuk tidak menyimpannya dan satu alasan yang mungkin membuat total tetap disimpan.*
 
 - **Jawaban**:  
@@ -197,7 +198,7 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
   - **Alasan TETAP menyimpan**: Demi pertimbangan **kinerja kueri (*query performance*)** dan kesepakatan nilai final pembayaran. Pada sistem basis data berskala besar dengan jutaan baris transaksi, menghitung ulang agregasi `SUM(qty * harga)` setiap kali menampilkan riwayat transaksi akan membebani CPU server. Nilai total yang disimpan juga menjadi bukti legal nominal uang yang telah disepakati dan dibayarkan pembeli pada saat transaksi ditutup.
 
 ### Titik Analisis 3
->
+
 > **Pertanyaan**: *Perhatikan kolom Pemasok pada Tabel 2.6. Tidak ada proses yang memberi huruf C. Apa artinya, dan proses apa yang perlu ditambahkan ke daftar proses bisnis? Periksa juga: siapa yang mengubah status aktif anggota?*
 
 - **Jawaban**:  
@@ -226,7 +227,7 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 
 1. **Pernyataan Kabur (a)**: *"data anggota harus aman"*  
    - **Rumusan Perbaikan yang Dapat Diuji**:  
-     > *"Atribut `no_hp_anggota` dan `nim_anggota` diklasifikasikan sebagai data pribadi sensitif sesuai UU PDP No. 27/2022; data ini hanya boleh dibaca (*SELECT*) oleh akun dengan peran Ketua Koperasi, disamarkan (*masked* berupa `0812****123`) saat diakses oleh peran Kasir, dan setiap akses baca dicatat dalam riwayat audit log."*
+     > *"Atribut `no_hp_anggota` dan `nim_anggota` diklasifikasikan sebagai data pribadi sensitif sesuai UU PDP No. 27/2022; data ini hanya boleh dibaca (*SELECT*) oleh akun dengan peran Ketua Koperasi, disamarkan (*masked* berupa `0812****0037`) saat diakses oleh peran Kasir, dan setiap akses baca dicatat dalam riwayat audit log."*
 2. **Pernyataan Kabur (b)**: *"sistem harus cepat mencari barang"*  
    - **Rumusan Perbaikan yang Dapat Diuji**:  
      > *"Pencarian barang berdasarkan `kode_barang` atau awalan `nama_barang` pada tabel master berisi hingga 10.000 baris data harus menghasilkan keluaran dalam waktu eksekusi kurang dari 150 milidetik pada penggunaan indeks B-Tree tanpa memicu pemindaian tabel menyeluruh (*full table scan*)."*
