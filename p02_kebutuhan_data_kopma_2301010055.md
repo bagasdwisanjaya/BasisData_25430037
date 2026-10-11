@@ -1,4 +1,5 @@
 # Dokumen Kebutuhan Data - Koperasi Mahasiswa Sejahtera (Kopma)
+
 **Nama Praktikan:** Rizki Pratama  
 **NIM:** 2301010055  
 **Kelas:** Ilmu Komputer - Semester 3  
@@ -8,9 +9,11 @@
 ---
 
 ## 1. Latar Belakang dan Aktivitas Organisasi
+
 Koperasi Mahasiswa Sejahtera (Kopma) adalah unit kegiatan usaha mandiri di lingkungan kampus yang menyediakan aneka kebutuhan mahasiswa, meliputi alat tulis kantor (ATK), makanan ringan, dan minuman. Transaksi dapat dilakukan oleh mahasiswa yang terdaftar sebagai anggota koperasi maupun pembeli umum non-anggota. Mahasiswa yang ingin menikmati potongan harga khusus (diskon 5%) wajib mendaftar sebagai anggota aktif dengan menyerahkan data identitas diri.
 
 Pencatatan yang selama ini menggunakan buku manual dan spreadsheet sederhana menimbulkan sejumlah permasalahan krusial:
+
 1. Terjadinya nilai persediaan (stok) minus akibat pencatatan yang terlambat atau tidak terkontrol.
 2. Riwayat harga lama hilang atau tertimpa saat harga barang naik, sehingga nota penjualan lampau tidak dapat dihitung ulang dengan benar.
 3. Kasir kesulitan mengidentifikasi anggota yang tidak membawa kartu fisik saat berbelanja.
@@ -23,14 +26,16 @@ Untuk mengatasi permasalahan tersebut, dirancang basis data relasional operasion
 ## 2. Aktor dan Proses Bisnis
 
 ### Aktor Sistem
+
 1. **Kasir**: Melayani transaksi pembayaran di gerai, mendaftarkan anggota baru, dan mencetak nota penjualan.
 2. **Petugas Gudang**: Mengelola persediaan fisik, memantau batas minimum stok barang, membuat pesanan pembelian ke pemasok, dan menerima barang datang beserta faktur.
 3. **Ketua Koperasi**: Bertindak sebagai pengawas tata kelola usaha, memantau laporan manajerial bulanan, mengelola data mitra pemasok, dan menetapkan status aktif anggota.
 4. **Pembeli / Anggota**: Melakukan transaksi pembelian produk di Kopma.
 
 ### Tabel Identifikasi Proses Bisnis (PB)
+
 | Kode PB | Proses Bisnis | Aktor Pelaksana | Pemicu (Trigger) | Keluaran (Output) |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | **PB-01** | Mendaftarkan Anggota Baru | Kasir | Mahasiswa mengajukan pendaftaran keanggotaan | Data anggota tersimpan, kartu/nomor anggota diterbitkan |
 | **PB-02** | Mencatat Transaksi Penjualan | Kasir | Pembeli membawa barang belanjaan ke kasir | Nota penjualan tercetak, stok barang berkurang |
 | **PB-03** | Memesan Barang ke Pemasok | Petugas Gudang | Stok barang berada di bawah batas minimum (`stok <= stok_min`) | Surat pesanan pembelian (PO) terbit |
@@ -44,6 +49,7 @@ Untuk mengatasi permasalahan tersebut, dirancang basis data relasional operasion
 ## 3. Dokumen Sumber yang Dianalisis
 
 ### 3.1 Nota Penjualan Kopma (Dokumen Sumber Transaksi Penjualan)
+
 - **Nomor Dokumen**: `PJ-2609-0142`
 - **Elemen Data Tersimpan**:
   - Tanggal & Waktu: `26/09/2026 14:15`
@@ -56,6 +62,7 @@ Untuk mengatasi permasalahan tersebut, dirancang basis data relasional operasion
   - Jumlah Bayar & Uang Kembalian
 
 ### 3.2 Faktur Pembelian Pemasok (Dokumen Sumber Pengadaan)
+
 - **Elemen Data**: Nomor Faktur Pemasok, Tanggal Faktur, Kode Pemasok, Kode Barang, Qty Masuk, Harga Beli Satuan (Modal).
 
 ---
@@ -63,7 +70,7 @@ Untuk mengatasi permasalahan tersebut, dirancang basis data relasional operasion
 ## 4. Entitas Kandidat dan Elemen Data
 
 | Entitas Kandidat | Kategori | Elemen Data Utama | Sumber Penggalian |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **Anggota** | Master Data | `id_anggota`, `no_anggota`, `nim_anggota`, `nama_anggota`, `prodi_anggota`, `no_hp_anggota`, `status_anggota`, `tgl_daftar_anggota` | Formulir Pendaftaran |
 | **Petugas** | Master Data | `id_petugas`, `kode_petugas`, `nama_petugas`, `peran_petugas` | Wawancara Manajemen |
 | **Barang** | Master Data / Katalog | `id_barang`, `kode_barang`, `nama_barang`, `kategori_barang`, `harga_jual_barang`, `stok_barang`, `stok_min_barang` | Daftar Barang & Label Harga |
@@ -78,7 +85,7 @@ Untuk mengatasi permasalahan tersebut, dirancang basis data relasional operasion
 ## 5. Aturan Bisnis (Business Rules)
 
 | Kode AB | Pernyataan Aturan Bisnis | Implementasi / Penegakan |
-|---|---|---|
+| --- | --- | --- |
 | **AB-01** | Setiap nota penjualan memiliki nomor unik (`no_nota_penjualan`) dan wajib memuat minimal satu rincian barang. | `UNIQUE KEY`, Transaksi Database |
 | **AB-02** | Transaksi penjualan dapat dilakukan tanpa anggota (pembeli umum); jika pembeli adalah anggota, statusnya harus `aktif` agar berhak mendapatkan diskon 5%. | Kolom `id_anggota NULL`, Logika Aplikasi |
 | **AB-03** | Persediaan barang tidak boleh bernilai negatif; transaksi penjualan wajib ditolak jika jumlah beli melebihi stok yang tersedia. | `CHECK (stok_barang >= 0)`, Logika Validasi |
@@ -93,7 +100,7 @@ Untuk mengatasi permasalahan tersebut, dirancang basis data relasional operasion
 ## 6. Kebutuhan Informasi (KI)
 
 | Kode KI | Kebutuhan Informasi | Pengguna Sasaran | Elemen Data yang Diperlukan |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **KI-01** | Laporan omzet total pendapatan dan jumlah nota penjualan harian serta bulanan. | Ketua Koperasi | `penjualan`, `detail_penjualan` |
 | **KI-02** | Daftar 5 (lima) barang terlaris per bulan berdasarkan total kuantitas terjual. | Petugas Gudang & Ketua | `detail_penjualan`, `barang` |
 | **KI-03** | Daftar peringatan dini persediaan barang yang berada di bawah atau sama dengan batas minimum stok. | Petugas Gudang | `barang` (`stok_barang <= stok_min_barang`) |
@@ -107,7 +114,7 @@ Untuk mengatasi permasalahan tersebut, dirancang basis data relasional operasion
 Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 
 | Proses Bisnis | Petugas | Anggota | Barang | Pemasok | Penjualan | Detail Penjualan | Pembelian | Detail Pembelian |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **PB-01** Daftar Anggota | R | **C** | - | - | - | - | - | - |
 | **PB-02** Catat Penjualan | R | R | R, **U** | - | **C** | **C** | - | - |
 | **PB-03** Pesan ke Pemasok | R | - | R | R | - | - | **C** | **C** |
@@ -123,7 +130,7 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 ## 8. Kamus Data Awal (Data Dictionary)
 
 | Nama Kolom / Atribut | Arti & Keterangan | Format / Tipe Data | Contoh Nilai | Aturan Validasi | Penanggung Jawab (Data Steward) |
-|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- |
 | `id_petugas` | ID unik internal sistem untuk petugas | Integer, Auto Increment | `1` | Kunci Primer (PK) | Ketua Koperasi |
 | `kode_petugas` | Kode unik petugas kasir/gudang/ketua | CHAR(3) | `K01` | Unik, 3 karakter huruf & angka | Ketua Koperasi |
 | `nama_petugas` | Nama lengkap petugas | VARCHAR(100) | `Rina Permata` | Wajib diisi (NOT NULL) | Ketua Koperasi |
@@ -174,19 +181,25 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 
 ## 11. Jawaban Titik Analisis Modul 2
 
-### Titik Analisis 1:
+### Titik Analisis 1
+>
 > **Pertanyaan**: *Harga barang sudah tersimpan di data barang. Mengapa nota tetap perlu menyimpan harga saat transaksi? Hubungkan jawaban Anda dengan keluhan ketua koperasi dalam kutipan wawancara.*
+
 - **Jawaban**:  
   Harga pada data master `barang` merepresentasikan **harga jual saat ini** yang bersifat dinamis dan fluktuatif sesuai perkembangan pasar. Sebagaimana keluhan ketua koperasi (*"Harga barang sering naik, jadi kami bingung saat melihat nota lama"*), jika nota penjualan hanya mengambil harga dari tabel barang, maka ketika harga pulpen naik dari Rp4.000 menjadi Rp4.500, semua nota penjualan bulan lalu akan ikut berubah secara otomatis saat laporan dihitung ulang. Akibatnya, nilai omzet historis menjadi keliru dan pembukuan keuangan rusak. Oleh karena itu, atribut `harga_satuan_detail_penjualan` wajib disimpan permanen pada tabel transaksi sebagai **rekaman historis tak terubahkan (*immutable snapshot*)** dari harga pada detik transaksi terjadi.
 
-### Titik Analisis 2:
+### Titik Analisis 2
+>
 > **Pertanyaan**: *Subtotal dan total adalah nilai turunan. Sebutkan satu alasan untuk tidak menyimpannya dan satu alasan yang mungkin membuat total tetap disimpan.*
+
 - **Jawaban**:  
   - **Alasan TIDAK menyimpan**: Untuk mematuhi prinsip normalisasi dan menghindari **inkonsistensi data**. Nilai subtotal dan total dapat dihitung secara dinamis kapan saja melalui rumus matematis `qty * harga_satuan`. Jika nilai total disimpan di tabel database, terdapat risiko kegagalan sinkronisasi (misalnya salah satu baris rincian diubah/dihapus tetapi total pada kepala nota lupa diperbarui), sehingga menghasilkan data anomali.
   - **Alasan TETAP menyimpan**: Demi pertimbangan **kinerja kueri (*query performance*)** dan kesepakatan nilai final pembayaran. Pada sistem basis data berskala besar dengan jutaan baris transaksi, menghitung ulang agregasi `SUM(qty * harga)` setiap kali menampilkan riwayat transaksi akan membebani CPU server. Nilai total yang disimpan juga menjadi bukti legal nominal uang yang telah disepakati dan dibayarkan pembeli pada saat transaksi ditutup.
 
-### Titik Analisis 3:
+### Titik Analisis 3
+>
 > **Pertanyaan**: *Perhatikan kolom Pemasok pada Tabel 2.6. Tidak ada proses yang memberi huruf C. Apa artinya, dan proses apa yang perlu ditambahkan ke daftar proses bisnis? Periksa juga: siapa yang mengubah status aktif anggota?*
+
 - **Jawaban**:  
   - **Arti kolom Pemasok tanpa huruf C**: Hal ini mengindikasikan adanya celah (*CRUD gap*) atau entitas "yatim", yaitu data pemasok dibutuhkan oleh sistem pengadaan (Read pada PB-03 & PB-04), namun tidak ada proses bisnis terdefinisi yang bertugas memasukkan/mendaftarkan data pemasok baru ke dalam basis data.
   - **Proses bisnis yang perlu ditambahkan**: Perlu ditambahkan proses **PB-06: Mengelola Data Mitra Pemasok** (*Pendaftaran Vendor Baru*) yang dilakukan oleh Petugas Gudang atau Ketua Koperasi untuk menginput (Create), memperbarui alamat/telepon (Update), dan melihat (Read) data pemasok.
@@ -197,6 +210,7 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 ## 12. Hasil Latihan dan Modifikasi (Bagian E)
 
 ### 12.1 Penambahan Fitur Poin Loyalitas (Latihan E.1)
+
 1. **Elemen Data Baru**:
    - Pada entitas Anggota: `poin_loyalitas_anggota INT DEFAULT 0`.
    - Pada entitas Penjualan: `poin_didapat_penjualan INT DEFAULT 0`, `poin_digunakan_penjualan INT DEFAULT 0`.
@@ -209,6 +223,7 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
    - Proses `PB-02` (Catat Penjualan) kini melakukan **Update (U)** pada entitas `Anggota` untuk menambah poin yang diperoleh atau mengurangi poin yang ditukarkan.
 
 ### 12.2 Perbaikan Tiga Pernyataan Kebutuhan Kabur agar Dapat Diuji (Latihan E.2)
+
 1. **Pernyataan Kabur (a)**: *"data anggota harus aman"*  
    - **Rumusan Perbaikan yang Dapat Diuji**:  
      > *"Atribut `no_hp_anggota` dan `nim_anggota` diklasifikasikan sebagai data pribadi sensitif sesuai UU PDP No. 27/2022; data ini hanya boleh dibaca (*SELECT*) oleh akun dengan peran Ketua Koperasi, disamarkan (*masked* berupa `0812****123`) saat diakses oleh peran Kasir, dan setiap akses baca dicatat dalam riwayat audit log."*

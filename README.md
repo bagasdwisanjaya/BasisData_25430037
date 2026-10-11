@@ -32,7 +32,7 @@ Repositori ini berisi seluruh artefak pekerjaan praktikum mata kuliah **Basis Da
 Mengacu pada *Tabel P.3 Standar Penamaan Berkas dan Objek Basis Data* pada Buku Praktikum:
 
 | Objek | Standar Penamaan | Implementasi di Proyek Ini |
-|---|---|---|
+| --- | --- | --- |
 | **Repositori GitHub** | `basisdata-<NIM>` | `basisdata-2301010055` |
 | **Basis Data Praktik (Kopma)** | `kopma_<3d>` | `kopma_055` |
 | **Basis Data Proyek** | `<kode_tema>_<3d>` | `toko_055` |
@@ -62,6 +62,7 @@ basisdata-2301010055/
 Skrip `p01_lingkungan_2301010055.sql` dirancang bersifat **idempotent**, yaitu menggunakan klausa `IF NOT EXISTS` sehingga aman dieksekusi berkali-kali tanpa menghasilkan galat (*error*).
 
 ### 1. Menjalankan Skrip melalui CLI (Command Prompt / XAMPP Shell)
+
 Pastikan layanan MariaDB pada XAMPP Control Panel sudah berstatus **Running** di port 3306.
 
 ```bash
@@ -70,6 +71,7 @@ mysql -u root -p < p01_lingkungan_2301010055.sql
 ```
 
 ### 2. Menguji Akses Akun Pengembang Proyek (`dev_055`)
+
 Masuk ke MariaDB menggunakan akun pengembang proyek:
 
 ```bash
@@ -77,6 +79,7 @@ mysql -u dev_055 -p
 ```
 
 Uji hak akses untuk membuktikan prinsip *Least Privilege*:
+
 ```sql
 -- Memeriksa basis data yang dapat diakses (hanya information_schema dan toko_055)
 SHOW DATABASES;

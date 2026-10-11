@@ -1,4 +1,5 @@
 # Dokumen Kebutuhan Data - Toko Daring Sentosa RP
+
 **Nama Praktikan:** Rizki Pratama  
 **NIM:** 2301010055  
 **Kelas:** Ilmu Komputer - Semester 3  
@@ -13,6 +14,7 @@
 **Toko Daring Sentosa RP** adalah entitas bisnis ritel berbasis digital yang melayani pemesanan, pembelian, dan pengiriman perlengkapan komputasi, aksesori teknologi, serta perlengkapan belajar mahasiswa secara daring. Dalam operasionalnya, pelanggan dapat menjelajahi katalog produk, memasukkan produk ke keranjang belanja, melakukan pemesanan (*checkout*), memilih metode pembayaran, serta memantau status pengiriman paket hingga barang diterima.
 
 Aktivitas utama organisasi meliputi:
+
 1. Pengelolaan master katalog produk, penetapan kategori, dan pemeliharaan persediaan stok barang secara waktu nyata (*real-time*).
 2. Penerimaan pemesanan belanja daring dari pelanggan terdaftar maupun pembeli tamu (*guest*).
 3. Penerimaan dan verifikasi pembayaran pesanan melalui kanal transfer bank, dompet digital (*e-wallet*), maupun gerai ritel.
@@ -24,6 +26,7 @@ Aktivitas utama organisasi meliputi:
 ## 2. Aktor dan Proses Bisnis
 
 ### Aktor Sistem
+
 1. **Pelanggan**: Menjelajahi katalog, memilih barang, membuat pesanan (*checkout*), melakukan pembayaran, dan melacak paket pengiriman.
 2. **Admin Penjualan / Operasional**: Mengelola katalog produk, memverifikasi ketersediaan stok, dan memperbarui status pesanan.
 3. **Staf Keuangan**: Memverifikasi bukti/pemberitahuan pembayaran transaksi yang masuk.
@@ -31,8 +34,9 @@ Aktivitas utama organisasi meliputi:
 5. **Pimpinan / Pemilik Toko**: Memantau laporan kinerja operasional, penjualan, dan tren pergerakan produk.
 
 ### Tabel Identifikasi Proses Bisnis (PB)
+
 | Kode PB | Proses Bisnis | Aktor Pelaksana | Pemicu (Trigger) | Keluaran (Output) |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | **PB-01** | Registrasi & Pengelolaan Akun Pelanggan | Pelanggan | Calon pembeli mendaftar akun baru di aplikasi | Profil pelanggan tersimpan, kredensial aktif |
 | **PB-02** | Pengelolaan Master Katalog Produk | Admin Operasional | Adanya produk baru, perubahan harga, atau pengadaan stok | Data produk tersimpan di katalog, stok fisik diperbarui |
 | **PB-03** | Pembuatan Pesanan Belanja (*Checkout*) | Pelanggan | Pelanggan menekan tombol *checkout* pesanan | Dokumen invoice pemesanan terbit, stok produk dicadangkan |
@@ -78,7 +82,8 @@ Nominal Dibayar          : Rp 358.000   [STATUS: LUNAS VERIFIKASI]
 ========================================================================================
 ```
 
-### Pembedahan Elemen Data Dokumen Sumber:
+### Pembedahan Elemen Data Dokumen Sumber
+
 1. **Elemen Kepala Dokumen (Disimpan di tabel `pesanan`)**:
    - `no_pesanan`: `ORD-20261011-0055` (Kunci unik transaksi)
    - `tgl_pesanan`: `2026-10-11 14:35:10`
@@ -101,7 +106,7 @@ Nominal Dibayar          : Rp 358.000   [STATUS: LUNAS VERIFIKASI]
 ## 4. Entitas Kandidat dan Elemen Data
 
 | Entitas Kandidat | Kategori | Elemen Data Utama | Deskripsi Peran |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **Pelanggan** | Master Data | `id_pelanggan`, `kode_pelanggan`, `nama_pelanggan`, `email_pelanggan`, `no_hp_pelanggan`, `alamat_pelanggan`, `tgl_daftar_pelanggan` | Menyimpan data pembeli terdaftar |
 | **Kategori Produk** | Master Referensi | `id_kategori`, `kode_kategori`, `nama_kategori` | Klasifikasi kelompok barang dagangan |
 | **Produk** | Master Katalog | `id_produk`, `kode_produk`, `nama_produk`, `id_kategori`, `harga_jual_produk`, `stok_produk`, `stok_min_produk` | Katalog barang dan informasi stok gudang |
@@ -115,7 +120,7 @@ Nominal Dibayar          : Rp 358.000   [STATUS: LUNAS VERIFIKASI]
 ## 5. Aturan Bisnis (Business Rules)
 
 | Kode AB | Pernyataan Aturan Bisnis | Mekanisme Penegakan |
-|---|---|---|
+| --- | --- | --- |
 | **AB-01** | Setiap pesanan belanja memiliki kode transaksi unik (`no_pesanan`) berformat `ORD-YYYYMMDD-XXXX` dan wajib memiliki minimal 1 item rincian produk. | `UNIQUE KEY`, Transaksi Database |
 | **AB-02** | Batas maksimal variasi item produk berbeda dalam 1 pesanan adalah **$P + 2 = 4$ jenis barang** guna menjaga kapasitas volume standar kemasan paket ritel. | Logika Validasi Aplikasi & Transaksi |
 | **AB-03** | Jumlah kuantitas produk yang dipesan (`qty_detail_pesanan`) harus lebih besar dari 0 dan tidak boleh melebihi stok gudang yang tersedia saat itu (`stok_produk >= qty`). | `CHECK (qty > 0)`, Pengecekan Stok |
@@ -131,7 +136,7 @@ Nominal Dibayar          : Rp 358.000   [STATUS: LUNAS VERIFIKASI]
 ## 6. Kebutuhan Informasi (KI)
 
 | Kode KI | Kebutuhan Informasi | Pengguna Sasaran | Elemen Data yang Diperlukan |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **KI-01** | Laporan ringkasan total omzet penjualan, total diskon, dan jumlah pesanan berhasil per hari dan per bulan. | Pimpinan Toko | `pesanan`, `detail_pesanan`, `pembayaran` |
 | **KI-02** | Daftar 5 (lima) produk terlaris (*best seller*) berdasarkan akumulasi volume penjualan kuantitas barang dalam satu bulan. | Admin & Pimpinan | `detail_pesanan`, `produk` |
 | **KI-03** | Laporan peringatan dini stok produk kritis (*low stock alert*) yang berada di bawah atau sama dengan batas minimum stok gudang. | Petugas Gudang | `produk` (`stok_produk <= stok_min_produk`) |
@@ -145,7 +150,7 @@ Nominal Dibayar          : Rp 358.000   [STATUS: LUNAS VERIFIKASI]
 Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 
 | Proses Bisnis | Pelanggan | Kategori Produk | Produk | Pesanan | Detail Pesanan | Pembayaran | Pengiriman |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **PB-01** Registrasi & Akun Pelanggan | **C, U** | - | - | R | - | - | - |
 | **PB-02** Kelola Katalog & Stok | - | **C, R, U** | **C, R, U** | - | - | - | - |
 | **PB-03** Buat Pesanan (*Checkout*) | R | R | R, **U** | **C** | **C** | - | - |
@@ -160,7 +165,7 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 ## 8. Kamus Data Awal (Data Dictionary)
 
 | No | Nama Kolom / Atribut | Arti & Keterangan | Format / Tipe Data | Contoh Nilai | Aturan Validasi | Penanggung Jawab (Data Steward) |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | 1 | `id_pelanggan` | ID unik internal sistem pelanggan | INT, Auto Increment | `1` | Kunci Primer (PK) | Admin Penjualan |
 | 2 | `kode_pelanggan` | Kode unik kartu anggota pelanggan | VARCHAR(12) | `CUST-0055` | Unik, Format `CUST-xxxx` | Admin Penjualan |
 | 3 | `nama_pelanggan` | Nama lengkap pembeli | VARCHAR(100) | `Rizki Pratama` | Wajib diisi (NOT NULL) | Admin Penjualan |
@@ -183,8 +188,8 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 | 20 | `status_pesanan` | Status siklus hidup pesanan | ENUM | `'lunas'` | `menunggu`, `lunas`, `dikirim`, `selesai`, `batal` | Admin Penjualan |
 | 21 | `qty_detail_pesanan` | Jumlah unit barang yang dipesan | SMALLINT | `2` | Angka bulat > 0 (AB-03) | Admin Penjualan |
 | 22 | `harga_satuan_detail_pesanan` | Harga jual produk saat checkout | DECIMAL(12,2) | `85000.00` | Angka uang >= 0 (AB-04) | Admin Penjualan |
-| 23 | `no_transaksi_pembayaran`| Nomor referensi bayar perbankan | VARCHAR(50) | `PAY-20261011-77881` | Unik per transaksi bayar | Staf Keuangan |
-| 24 | `metode_pembayaran`| Kanal pembayaran yang dipilih | VARCHAR(30) | `QRIS ShopeePay` | Pilihan terverifikasi | Staf Keuangan |
+| 23 | `no_transaksi_pembayaran` | Nomor referensi bayar perbankan | VARCHAR(50) | `PAY-20261011-77881` | Unik per transaksi bayar | Staf Keuangan |
+| 24 | `metode_pembayaran` | Kanal pembayaran yang dipilih | VARCHAR(30) | `QRIS ShopeePay` | Pilihan terverifikasi | Staf Keuangan |
 | 25 | `nominal_pembayaran` | Jumlah rupiah yang disetor | DECIMAL(12,2) | `358000.00` | Harus sama dengan total tagihan | Staf Keuangan |
 | 26 | `no_resi_pengiriman` | Nomor resi pelacakan ekspedisi | VARCHAR(40) | `JNE-992384755` | Unik resmi kurir (AB-08) | Petugas Logistik |
 | 27 | `nama_ekspedisi` | Nama perusahaan kurir logistik | VARCHAR(50) | `JNE Express Reguler` | Wajib diisi | Petugas Logistik |
@@ -195,7 +200,9 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 ## 9. Kebutuhan Non-Fungsional dan Perhitungan Parameter Personal ($P$)
 
 ### 9.1 Perhitungan Parameter Personal Berbasis NIM
+
 Sesuai pedoman buku praktikum Modul 2 bagian Petunjuk Tugas Mandiri:
+
 - **NIM Mahasiswa**: `2301010055`
 - **Dua Digit Terakhir NIM**: $55$
 - **Perhitungan Rumus Parameter $P$**:
@@ -203,7 +210,8 @@ Sesuai pedoman buku praktikum Modul 2 bagian Petunjuk Tugas Mandiri:
   $$P = (55 \pmod 9) + 1$$
   $$P = 1 + 1 = \mathbf{2}$$
 
-### 9.2 Penerapan Parameter $P = 2$ pada Batasan Bisnis Proyek:
+### 9.2 Penerapan Parameter $P = 2$ pada Batasan Bisnis Proyek
+
 1. **Batas Maksimal Variasi Item per Transaksi**:
    $$\text{Maksimal Item} = P + 2 = 2 + 2 = \mathbf{4}\text{ jenis produk berbeda per transaksi invoice.}$$
 2. **Persentase Kupon Diskon Belanja Toko**:
@@ -212,6 +220,7 @@ Sesuai pedoman buku praktikum Modul 2 bagian Petunjuk Tugas Mandiri:
    $$\text{Estimasi Transaksi Harian} = 40 + (5 \times P) = 40 + (5 \times 2) = \mathbf{50}\text{ transaksi pemesanan per hari.}$$
 
 ### 9.3 Kebutuhan Non-Fungsional Teknis & Pelindungan Data Pribadi
+
 1. **Volume dan Kapasitas Data**:
    - Dengan 50 transaksi per hari dan rata-rata 3 rincian produk per transaksi, sistem menampung sekitar 1.500 transaksi pesanan dan 4.500 baris rincian barang per bulan.
 2. **Retensi Data**:
