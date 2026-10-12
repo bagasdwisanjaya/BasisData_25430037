@@ -9,6 +9,8 @@ Repositori ini berisi seluruh artefak pekerjaan praktikum mata kuliah **Basis Da
 - **Nama Mahasiswa** : Bagas Dwi Sanjaya
 - **NIM** : 25430037
 - **Kelas** : Kelas B, Ilmu Komputer - Semester 3
+- **Tanggal** : 30 September 2026
+- **Pertemuan** : Satu (1)
 - **Program Studi** : Ilmu Komputer
 - **Fakultas** : Fakultas Ilmu Komputer
 - **Perguruan Tinggi** : Universitas Muhammadiyah Metro

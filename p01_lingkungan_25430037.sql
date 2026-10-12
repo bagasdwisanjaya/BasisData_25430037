@@ -4,6 +4,8 @@
 -- File        : p01_lingkungan_25430037.sql
 -- Praktikan   : Bagas Dwi Sanjaya (NIM: 25430037)
 -- Kelas       : Kelas B, Ilmu Komputer - Semester 3
+-- Tanggal : 30 September 2026
+-- Pertemuan : Satu (1)
 -- Topik       : Inisialisasi Basis Data Praktik, Akun Kerja, dan Basis Data Proyek
 -- Karakteristik : Idempotent (Dapat dijalankan berulang kali tanpa galat)
 -- Catatan Keamanan: Password sengaja diganti penanda (<password_...>) sesuai

@@ -3,9 +3,12 @@
 **Nama Praktikan:** Bagas Dwi Sanjaya  
 **NIM:** 25430037  
 **Kelas:** Kelas B, Ilmu Komputer - Semester 3  
+**Tanggal:** 30 September 2026  
+**Pertemuan** : Satu (1)
 **Mata Kuliah:** Praktikum Basis Data (Semester 3)  
-**Modul:** 2 - Analisis Kebutuhan Pengelolaan Data  
-**Tahun Akademik:** 2026/2027  
+**Tema Proyek:** Toko Daring (Kode: `toko`)  
+**Milestone:** 2 - Dokumen Kebutuhan Data Proyek Mandiri  
+**Tahun Akademik:** 2026/2027 
 
 ---
 
