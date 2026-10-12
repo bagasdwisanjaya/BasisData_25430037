@@ -50,7 +50,6 @@ Mengacu pada *Tabel P.3 Standar Penamaan Berkas dan Objek Basis Data* pada Buku 
 ```text
 basisdata-25430037/
 ├── .gitignore                      # Konfigurasi pengabaian berkas kredensial & sistem
-├── .markdownlint.json              # Konfigurasi linter dokumentasi markdown
 ├── README.md                       # Dokumentasi identitas praktikan dan proyek
 ├── p01_lingkungan_25430037.sql     # Skrip DDL lingkungan idempotent Modul 1
 ├── p02_kebutuhan_data_kopma_25430037.md # Analisis kebutuhan data studi kasus Kopma
