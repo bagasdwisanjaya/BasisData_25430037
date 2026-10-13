@@ -73,16 +73,16 @@ Untuk mengatasi permasalahan tersebut, dirancang basis data relasional operasion
 
 ## 4. Entitas Kandidat dan Elemen Data
 
-| Entitas Kandidat | Kategori | Elemen Data Utama | Sumber Penggalian |
+Sesuai hasil rancangan dan implementasi pada basis data `kopma_123`, teridentifikasi 6 entitas data utama:
+
+| Entitas Kandidat | Kategori | Elemen Data Utama | Deskripsi Peran |
 | --- | --- | --- | --- |
-| **Anggota** | Master Data | `id_anggota`, `no_anggota`, `nim_anggota`, `nama_anggota`, `prodi_anggota`, `no_hp_anggota`, `status_anggota`, `tgl_daftar_anggota` | Formulir Pendaftaran |
-| **Petugas** | Master Data | `id_petugas`, `kode_petugas`, `nama_petugas`, `peran_petugas` | Wawancara Manajemen |
-| **Barang** | Master Data / Katalog | `id_barang`, `kode_barang`, `nama_barang`, `kategori_barang`, `harga_jual_barang`, `stok_barang`, `stok_min_barang` | Daftar Barang & Label Harga |
-| **Pemasok** | Master Data | `id_pemasok`, `kode_pemasok`, `nama_pemasok`, `telepon_pemasok`, `alamat_pemasok` | Faktur Pengadaan Vendor |
-| **Penjualan** | Transaksi (Header) | `id_penjualan`, `no_nota_penjualan`, `tgl_penjualan`, `id_petugas`, `id_anggota`, `bayar_penjualan` | Nota Penjualan |
-| **Detail Penjualan** | Transaksi (Asosiatif) | `id_penjualan`, `id_barang`, `qty_detail_penjualan`, `harga_satuan_detail_penjualan` | Rincian Nota Penjualan |
-| **Pembelian** | Transaksi (Header) | `id_pembelian`, `no_faktur_pembelian`, `tgl_pembelian`, `id_pemasok`, `status_pembelian` | Faktur Pengadaan |
-| **Detail Pembelian** | Transaksi (Asosiatif) | `id_pembelian`, `id_barang`, `qty_detail_pembelian`, `harga_beli_detail_pembelian` | Rincian Faktur Pengadaan |
+| **Kasir** | Master Data | `id_kasir`, `nama_kasir` | Menyimpan identitas petugas kasir yang melayani transaksi |
+| **Anggota** | Master Data | `id_anggota`, `nama_anggota` | Menyimpan data mahasiswa/anggota koperasi yang berbelanja |
+| **Barang** | Master Data / Katalog | `id_barang`, `nama_barang`, `harga` | Katalog produk/komoditas yang dijual di toko Kopma |
+| **Transaksi** | Transaksi (Header) | `no_nota`, `tanggal`, `id_kasir`, `id_anggota`, `jumlah`, `diskon`, `total` | Rekaman kepala nota belanja kasir |
+| **Detail Transaksi** | Transaksi (Asosiatif) | `id_detail`, `no_nota`, `id_barang`, `qty`, `harga_transaksi`, `subtotal` | Rincian komoditas barang yang dibeli per nota |
+| **Pembayaran** | Transaksi | `id_pembayaran`, `no_nota`, `metode`, `nominal_bayar`, `kembalian` | Rekaman penyelesaian pembayaran dan uang kembalian |
 
 ---
 
@@ -90,14 +90,13 @@ Untuk mengatasi permasalahan tersebut, dirancang basis data relasional operasion
 
 | Kode AB | Pernyataan Aturan Bisnis | Implementasi / Penegakan |
 | --- | --- | --- |
-| **AB-01** | Setiap nota penjualan memiliki nomor unik (`no_nota_penjualan`) dan wajib memuat minimal satu rincian barang. | `UNIQUE KEY`, Transaksi Database |
-| **AB-02** | Transaksi penjualan dapat dilakukan tanpa anggota (pembeli umum); jika pembeli adalah anggota, statusnya harus `aktif` agar berhak mendapatkan diskon 5%. | Kolom `id_anggota NULL`, Logika Aplikasi |
-| **AB-03** | Persediaan barang tidak boleh bernilai negatif; transaksi penjualan wajib ditolak jika jumlah beli melebihi stok yang tersedia. | `CHECK (stok_barang >= 0)`, Logika Validasi |
-| **AB-04** | Harga satuan pada rincian nota penjualan disimpan pada saat transaksi terjadi dan tidak boleh berubah meskipun harga master barang dinaikkan di masa mendatang. | Kolom `harga_satuan_detail_penjualan` |
-| **AB-05** | Nomor Induk Mahasiswa (`nim_anggota`) dan nomor anggota (`no_anggota`) harus unik; kasir dapat mencari data anggota berdasarkan nomor kartu atau NIM. | `UNIQUE KEY` pada masing-masing kolom |
-| **AB-06** | Pengadaan barang (pemesanan pembelian) otomatis dipicu ketika stok fisik berada di bawah batas minimum (`stok_barang <= stok_min_barang`). | Pemicu Operasional & Laporan KI-03 |
-| **AB-07** | *(Poin Loyalitas)* Anggota aktif berhak memperoleh 1 poin loyalitas untuk setiap kelipatan belanja Rp10.000. | Aturan Loyalty Program |
-| **AB-08** | *(Penukaran Poin)* Penukaran 50 poin loyalitas memberikan potongan belanja sebesar Rp5.000, dengan saldo poin tidak boleh negatif. | Aturan Loyalty Program |
+| **AB-01** | Setiap nota transaksi memiliki kode unik (`no_nota`) berformat teks dan wajib berelasi dengan petugas kasir aktif (`id_kasir`). | `PRIMARY KEY`, `FOREIGN KEY (id_kasir) REFERENCES kasir(id_kasir)` |
+| **AB-02** | Transaksi penjualan dapat dilakukan oleh pembeli umum tanpa anggota (`id_anggota` boleh `NULL`); jika pembeli adalah anggota terdaftar, `id_anggota` dicatat untuk hak diskon. | Kolom `id_anggota NULL`, `FOREIGN KEY (id_anggota) REFERENCES anggota(id_anggota)` |
+| **AB-03** | Jumlah kuantitas barang yang dibeli (`qty`) harus berupa bilangan bulat positif (`qty > 0`). | Integritas Aplikasi & Transaksi |
+| **AB-04** | Harga satuan pada rincian transaksi (`harga_transaksi`) dicatat dan disimpan permanen pada saat transaksi terjadi, tidak terpengaruh oleh kenaikan harga master barang di masa mendatang. | Kolom `harga_transaksi DECIMAL(12,2)` |
+| **AB-05** | Perhitungan nilai subtotal pada rincian nota dihitung dari perkalian kuantitas dan harga satuan (`subtotal = qty * harga_transaksi`). | Integritas Aplikasi & Tabel Rincian |
+| **AB-06** | Total tagihan akhir dihitung dari akumulasi jumlah belanja dikurangi nilai diskon yang diperoleh (`total = jumlah - diskon`). | Kolom `total DECIMAL(12,2) DEFAULT 0` |
+| **AB-07** | Setiap pencatatan pembayaran kasir mencatat metode bayar (tunai/QRIS/transfer), nominal uang yang diserahkan (`nominal_bayar`), dan uang kembalian (`kembalian = nominal_bayar - total`). | Tabel `pembayaran`, FK ke `transaksi(no_nota)` |
 
 ---
 
@@ -105,11 +104,10 @@ Untuk mengatasi permasalahan tersebut, dirancang basis data relasional operasion
 
 | Kode KI | Kebutuhan Informasi | Pengguna Sasaran | Elemen Data yang Diperlukan |
 | --- | --- | --- | --- |
-| **KI-01** | Laporan omzet total pendapatan dan jumlah nota penjualan harian serta bulanan. | Ketua Koperasi | `penjualan`, `detail_penjualan` |
-| **KI-02** | Daftar 5 (lima) barang terlaris per bulan berdasarkan total kuantitas terjual. | Petugas Gudang & Ketua | `detail_penjualan`, `barang` |
-| **KI-03** | Daftar peringatan dini persediaan barang yang berada di bawah atau sama dengan batas minimum stok. | Petugas Gudang | `barang` (`stok_barang <= stok_min_barang`) |
-| **KI-04** | Daftar 10 (sepuluh) anggota koperasi dengan akumulasi nilai transaksi belanja terbesar per bulan. | Ketua Koperasi | `anggota`, `penjualan`, `detail_penjualan` |
-| **KI-05** | Rekapitulasi perolehan dan penukaran saldo poin loyalitas anggota aktif. | Kasir & Ketua | `anggota`, `penjualan` |
+| **KI-01** | Laporan omzet pendapatan harian, total diskon, dan total transaksi kasir. | Pengurus Koperasi | `transaksi`, `pembayaran` |
+| **KI-02** | Daftar barang paling laku terjual berdasarkan akumulasi kuantitas (`qty`). | Pengurus & Petugas Gudang | `detail_transaksi`, `barang` |
+| **KI-03** | Rekapitulasi transaksi belanja yang dilakukan oleh anggota koperasi vs pembeli umum non-anggota. | Pengurus Koperasi | `transaksi`, `anggota` |
+| **KI-04** | Rekapitulasi pembayaran berdasarkan kanal/metode bayar (Tunai, QRIS, dll.). | Bagian Keuangan / Kasir | `pembayaran`, `transaksi` |
 
 ---
 
@@ -117,15 +115,13 @@ Untuk mengatasi permasalahan tersebut, dirancang basis data relasional operasion
 
 Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 
-| Proses Bisnis | Petugas | Anggota | Barang | Pemasok | Penjualan | Detail Penjualan | Pembelian | Detail Pembelian |
-| --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **PB-01** Daftar Anggota | R | **C** | - | - | - | - | - | - |
-| **PB-02** Catat Penjualan | R | R | R, **U** | - | **C** | **C** | - | - |
-| **PB-03** Pesan ke Pemasok | R | - | R | R | - | - | **C** | **C** |
-| **PB-04** Terima Barang | R | - | **U** | R | - | - | **U** | R |
-| **PB-05** Laporan Bulanan | R | R | R | R | R | R | R | R |
-| **PB-06** Kelola Pemasok | R | - | - | **C, U** | - | - | - | - |
-| **PB-07** Mutakhir Status Anggota | R | **U** | - | - | - | - | - | - |
+| Proses Bisnis | Kasir | Anggota | Barang | Transaksi | Detail Transaksi | Pembayaran |
+| --- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **PB-01** Pendaftaran Anggota | - | **C, R, U** | - | - | - | - |
+| **PB-02** Kelola Master Barang & Harga | - | - | **C, R, U** | - | - | - |
+| **PB-03** Pembuatan Transaksi Belanja | **R** | **R** | **R** | **C, R** | **C, R** | - |
+| **PB-04** Pembayaran & Penerimaan Kas | **R** | - | - | **R, U** | **R** | **C, R** |
+| **PB-05** Laporan Penjualan & Keuangan | **R** | **R** | **R** | **R** | **R** | **R** |
 
 *Catatan Evaluasi*: Seluruh entitas memiliki operasi **C** (Create) dan **R** (Read). Tidak ada entitas "yatim" dalam sistem.
 
@@ -133,31 +129,28 @@ Keterangan: **C** = Create, **R** = Read, **U** = Update, **D** = Delete.
 
 ## 8. Kamus Data Awal (Data Dictionary)
 
-| Nama Kolom / Atribut | Arti & Keterangan | Format / Tipe Data | Contoh Nilai | Aturan Validasi | Penanggung Jawab (Data Steward) |
-| --- | --- | --- | --- | --- | --- |
-| `id_petugas` | ID unik internal sistem untuk petugas | Integer, Auto Increment | `1` | Kunci Primer (PK) | Ketua Koperasi |
-| `kode_petugas` | Kode unik petugas kasir/gudang/ketua | CHAR(3) | `K01` | Unik, 3 karakter huruf & angka | Ketua Koperasi |
-| `nama_petugas` | Nama lengkap petugas | VARCHAR(100) | `Rina Permata` | Wajib diisi (NOT NULL) | Ketua Koperasi |
-| `peran_petugas` | Peran operasional petugas di Kopma | ENUM | `'kasir'` | Pilihan: `kasir`, `gudang`, `ketua` | Ketua Koperasi |
-| `id_anggota` | ID unik internal anggota koperasi | Integer, Auto Increment | `12` | Kunci Primer (PK) | Ketua Koperasi |
-| `no_anggota` | Nomor kartu tanda anggota resmi | VARCHAR(10) | `A-0457` | Format `A-xxxx`, Unik | Ketua Koperasi |
-| `nim_anggota` | Nomor Induk Mahasiswa anggota | CHAR(10) | `25430037` | Unik, 10 digit numerik | Ketua Koperasi |
-| `nama_anggota` | Nama lengkap mahasiswa anggota | VARCHAR(100) | `Budi Santoso` | Wajib diisi (NOT NULL) | Ketua Koperasi |
-| `no_hp_anggota` | Nomor telepon seluler anggota | VARCHAR(15) | `081234567890` | Data Pribadi (UU PDP), Akses Terbatas | Ketua Koperasi |
-| `status_anggota` | Status keaktifan anggota koperasi | ENUM | `'aktif'` | Nilai: `aktif`, `non-aktif` | Ketua Koperasi |
-| `id_barang` | ID unik internal master barang | Integer, Auto Increment | `1` | Kunci Primer (PK) | Petugas Gudang |
-| `kode_barang` | Kode barang (SKU/Barcode) | VARCHAR(10) | `ATK-001` | Unik, format kategori-nomor | Petugas Gudang |
-| `nama_barang` | Nama barang yang diperjualbelikan | VARCHAR(100) | `Buku Tulis Sinar Dunia 38` | Wajib diisi (NOT NULL) | Petugas Gudang |
-| `kategori_barang` | Kelompok produk | ENUM | `'ATK'` | Nilai: `ATK`, `makanan`, `minuman` | Petugas Gudang |
-| `harga_jual_barang` | Harga jual eceran saat ini | DECIMAL(12,2) | `4500.00` | Angka pecahan uang >= 0 | Petugas Gudang |
-| `stok_barang` | Jumlah persediaan fisik tersedia | INT | `35` | Angka bulat >= 0 (AB-03) | Petugas Gudang |
-| `stok_min_barang` | Batas minimum pemicu pemesanan | INT | `5` | Angka bulat >= 0 (AB-06) | Petugas Gudang |
-| `id_penjualan` | ID unik transaksi penjualan | Integer, Auto Increment | `101` | Kunci Primer (PK) | Kasir |
-| `no_nota_penjualan` | Nomor struk nota penjualan | CHAR(12) | `PJ-2609-0142` | Format `PJ-YYMM-nnnn`, Unik | Kasir |
-| `tgl_penjualan` | Waktu transaksi dilakukan di kasir | DATETIME | `2026-09-26 14:15:00` | Wajib diisi | Kasir |
-| `bayar_penjualan` | Uang tunai/nominal yang dibayarkan | DECIMAL(12,2) | `50000.00` | Nominal uang >= total belanja | Kasir |
-| `qty_detail_penjualan` | Jumlah barang yang dibeli per baris | SMALLINT | `2` | Angka bulat > 0 | Kasir |
-| `harga_satuan_detail_penjualan` | Harga jual satuan saat nota dicetak | DECIMAL(12,2) | `4500.00` | Nominal uang >= 0 (AB-04) | Kasir |
+| No | Nama Kolom / Atribut | Arti & Keterangan | Format / Tipe Data | Contoh Nilai | Aturan Validasi | Penanggung Jawab |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | `id_kasir` | ID unik petugas kasir | INT, Auto Increment | `1` | Kunci Primer (PK) | Pengurus Koperasi |
+| 2 | `nama_kasir` | Nama lengkap petugas kasir | VARCHAR(100) | `Rina` | Wajib diisi (NOT NULL) | Pengurus Koperasi |
+| 3 | `id_anggota` | ID/kode unik anggota koperasi | VARCHAR(20) | `A-0037` | Kunci Primer (PK) | Pengurus Koperasi |
+| 4 | `nama_anggota` | Nama lengkap anggota | VARCHAR(100) | `Bagas Dwi Sanjaya` | Wajib diisi (NOT NULL) | Pengurus Koperasi |
+| 5 | `id_barang` | ID unik master barang | INT, Auto Increment | `1` | Kunci Primer (PK) | Petugas Gudang |
+| 6 | `nama_barang` | Nama barang dagangan | VARCHAR(100) | `Buku Tulis Sinar Dunia` | Wajib diisi (NOT NULL) | Petugas Gudang |
+| 7 | `harga` | Harga jual eceran katalog saat ini | DECIMAL(12,2) | `4500.00` | Nilai pecahan uang >= 0 | Petugas Gudang |
+| 8 | `no_nota` | Nomor unik faktur/nota transaksi | VARCHAR(20) | `NOTA-20261011-001` | Kunci Primer (PK) | Kasir |
+| 9 | `tanggal` | Cap waktu transaksi dibuat | DATETIME | `2026-10-11 14:15:00` | Wajib diisi (NOT NULL) | Kasir |
+| 10 | `jumlah` | Total kotor sebelum diskon | DECIMAL(12,2) | `45000.00` | Nilai uang >= 0, default 0 | Kasir |
+| 11 | `diskon` | Potongan harga belanja anggota | DECIMAL(12,2) | `2250.00` | Nilai uang >= 0, default 0 | Kasir |
+| 12 | `total` | Total bersih yang wajib dibayar | DECIMAL(12,2) | `42750.00` | Nilai uang >= 0, default 0 | Kasir |
+| 13 | `id_detail` | ID unik rincian baris nota | INT, Auto Increment | `1` | Kunci Primer (PK) | Kasir |
+| 14 | `qty` | Kuantitas barang yang dibeli | INT | `2` | Angka bulat > 0 | Kasir |
+| 15 | `harga_transaksi` | Snapshot harga saat transaksi | DECIMAL(12,2) | `4500.00` | Nilai uang >= 0 (AB-04) | Kasir |
+| 16 | `subtotal` | Subtotal per item (qty * harga) | DECIMAL(12,2) | `9000.00` | Nilai uang >= 0 | Kasir |
+| 17 | `id_pembayaran` | ID unik bukti pembayaran | INT, Auto Increment | `1` | Kunci Primer (PK) | Kasir |
+| 18 | `metode` | Kanal pembayaran | VARCHAR(30) | `Tunai` / `QRIS` | Wajib diisi (NOT NULL) | Kasir |
+| 19 | `nominal_bayar` | Jumlah uang yang diserahkan | DECIMAL(12,2) | `50000.00` | Nilai uang >= total belanja | Kasir |
+| 20 | `kembalian` | Uang kembalian yang diberikan | DECIMAL(12,2) | `7250.00` | Nilai uang >= 0, default 0 | Kasir |
 
 ---
 
