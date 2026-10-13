@@ -9,8 +9,6 @@ Repositori ini berisi seluruh artefak pekerjaan praktikum mata kuliah **Basis Da
 - **Nama Mahasiswa** : Bagas Dwi Sanjaya
 - **NIM** : 25430037
 - **Kelas** : Kelas B, Ilmu Komputer - Semester 3
-- **Tanggal** : 30 September 2026
-- **Pertemuan** : Satu (1)
 - **Program Studi** : Ilmu Komputer
 - **Fakultas** : Fakultas Ilmu Komputer
 - **Perguruan Tinggi** : Universitas Muhammadiyah Metro
@@ -50,6 +48,7 @@ Mengacu pada *Tabel P.3 Standar Penamaan Berkas dan Objek Basis Data* pada Buku 
 ```text
 basisdata-25430037/
 ├── .gitignore                      # Konfigurasi pengabaian berkas kredensial & sistem
+├── .markdownlint.json              # Konfigurasi linter dokumentasi markdown
 ├── README.md                       # Dokumentasi identitas praktikan dan proyek
 ├── p01_lingkungan_25430037.sql     # Skrip DDL lingkungan idempotent Modul 1
 ├── p02_kebutuhan_data_kopma_25430037.md # Analisis kebutuhan data studi kasus Kopma
