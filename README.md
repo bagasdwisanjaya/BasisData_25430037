@@ -47,14 +47,20 @@ Mengacu pada *Tabel P.3 Standar Penamaan Berkas dan Objek Basis Data* pada Buku 
 
 ```text
 basisdata-25430037/
-├── .gitignore                      # Konfigurasi pengabaian berkas kredensial & sistem
-├── .markdownlint.json              # Konfigurasi linter dokumentasi markdown
-├── README.md                       # Dokumentasi identitas praktikan dan proyek
-├── p01_lingkungan_25430037.sql     # Skrip DDL lingkungan idempotent Modul 1
-├── p02_kebutuhan_data_kopma_25430037.md # Analisis kebutuhan data studi kasus Kopma
-├── p02_kebutuhan_data_25430037.md       # Dokumen kebutuhan data proyek Toko Daring
-└── laporan/                        # Berkas laporan per pertemuan
-    └── img/                        # Tangkapan layar bukti pelaksanaan praktikum
+├── .gitignore                          # Konfigurasi pengabaian berkas kredensial & sistem
+├── README.md                           # Dokumentasi identitas praktikan dan proyek
+├── p01_lingkungan_25430037.sql         # Skrip DDL lingkungan idempotent Modul 1
+├── p02_kebutuhan_data_kopma_25430037.md # Analisis kebutuhan data studi kasus Kopma Modul 2
+├── p02_kebutuhan_data_25430037.md       # Dokumen kebutuhan data proyek Toko Daring Modul 2
+├── p03_erd_kopma_25430037.drawio       # Berkas sumber diagram ERD Kopma Modul 3
+├── p03_erd_kopma_25430037.png          # Visualisasi gambar diagram ERD Kopma Modul 3
+├── p03_erd_25430037.drawio             # Berkas sumber diagram ERD Proyek Toko Daring Modul 3
+├── p03_erd_25430037.png                # Visualisasi gambar diagram ERD Proyek Toko Daring Modul 3
+└── laporan/                            # Berkas laporan per pertemuan
+    ├── p01_laporan_25430037.md         # Laporan praktikum Pertemuan 1
+    ├── p02_laporan_25430037.md         # Laporan praktikum Pertemuan 2
+    ├── p03_laporan_25430037.md         # Laporan praktikum Pertemuan 3
+    └── img/                            # Tangkapan layar bukti pelaksanaan praktikum
 ```
 
 ---
