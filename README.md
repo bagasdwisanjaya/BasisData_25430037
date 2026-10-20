@@ -62,7 +62,8 @@ basisdata-25430037/
     ├── p01_laporan_25430037.md         # Laporan praktikum Pertemuan 1
     ├── p02_laporan_25430037.md         # Laporan praktikum Pertemuan 2
     ├── p03_laporan_25430037.md         # Laporan praktikum Pertemuan 3
-    ├── p05_laporan_25430037.md         # Laporan praktikum Pertemuan 5
+    ├── p04_laporan_25430037.md         # Laporan praktikum Pertemuan 4 (Modul 4 - 21 Oktober)
+    ├── p05_laporan_25430037.md         # Laporan praktikum Modul 5 DDL Kopma
     └── img/                            # Tangkapan layar bukti pelaksanaan praktikum
 ```
 
