@@ -56,10 +56,13 @@ basisdata-25430037/
 ├── p03_erd_kopma_25430037.png          # Visualisasi gambar diagram ERD Kopma Modul 3
 ├── p03_erd_25430037.drawio             # Berkas sumber diagram ERD Proyek Toko Daring Modul 3
 ├── p03_erd_25430037.png                # Visualisasi gambar diagram ERD Proyek Toko Daring Modul 3
+├── p05_ddl_kopma_25430037.sql          # Skrip DDL fisik & penegakan constraint Kopma Modul 5
+├── p05_ddl_25430037.sql                # Skrip DDL fisik proyek Toko Daring (P=2) Modul 5
 └── laporan/                            # Berkas laporan per pertemuan
     ├── p01_laporan_25430037.md         # Laporan praktikum Pertemuan 1
     ├── p02_laporan_25430037.md         # Laporan praktikum Pertemuan 2
     ├── p03_laporan_25430037.md         # Laporan praktikum Pertemuan 3
+    ├── p05_laporan_25430037.md         # Laporan praktikum Pertemuan 5
     └── img/                            # Tangkapan layar bukti pelaksanaan praktikum
 ```
 
@@ -97,6 +100,18 @@ USE toko_037;
 
 -- Ditolak membuka basis data latihan Kopma (menghasilkan ERROR 1044):
 USE kopma_037;
+```
+
+### 3. Menjalankan Skrip DDL Modul 5 (Kopma dan Toko Daring)
+
+Skrip DDL Modul 5 bersifat idempoten dan dapat dieksekusi menggunakan akun masing-masing:
+
+```bash
+# Menjalankan DDL Kopma menggunakan akun mhs_037
+mysql -u mhs_037 -p kopma_037 < p05_ddl_kopma_25430037.sql
+
+# Menjalankan DDL Proyek Toko Daring menggunakan akun dev_037
+mysql -u dev_037 -p toko_037 < p05_ddl_25430037.sql
 ```
 
 ---
