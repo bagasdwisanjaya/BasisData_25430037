@@ -56,13 +56,15 @@ basisdata-25430037/
 ├── p03_erd_kopma_25430037.png          # Visualisasi gambar diagram ERD Kopma Modul 3
 ├── p03_erd_25430037.drawio             # Berkas sumber diagram ERD Proyek Toko Daring Modul 3
 ├── p03_erd_25430037.png                # Visualisasi gambar diagram ERD Proyek Toko Daring Modul 3
+├── p04_normalisasi_kopma_25430037.md   # Dokumen normalisasi studi kasus Kopma Modul 4
+├── p04_normalisasi_25430037.md         # Dokumen normalisasi proyek Toko Daring (P=2) Modul 4
 ├── p05_ddl_kopma_25430037.sql          # Skrip DDL fisik & penegakan constraint Kopma Modul 5
 ├── p05_ddl_25430037.sql                # Skrip DDL fisik proyek Toko Daring (P=2) Modul 5
 └── laporan/                            # Berkas laporan per pertemuan
     ├── p01_laporan_25430037.md         # Laporan praktikum Pertemuan 1
     ├── p02_laporan_25430037.md         # Laporan praktikum Pertemuan 2
     ├── p03_laporan_25430037.md         # Laporan praktikum Pertemuan 3
-    ├── p04_laporan_25430037.md         # Laporan praktikum Pertemuan 4 (Modul 4 - 21 Oktober)
+    ├── p04_laporan_25430037.md         # Laporan praktikum Pertemuan 4 (Modul 4: Normalisasi Basis Data)
     ├── p05_laporan_25430037.md         # Laporan praktikum Modul 5 DDL Kopma
     └── img/                            # Tangkapan layar bukti pelaksanaan praktikum
 ```
