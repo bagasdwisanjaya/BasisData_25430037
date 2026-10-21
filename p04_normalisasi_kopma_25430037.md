@@ -133,3 +133,4 @@ Seluruh dependensi transitif dihilangkan. Ditambah dekomposisi simetris pada mod
 
 ---
 *Disusun oleh Bagas Dwi Sanjaya (NIM: 25430037) - Praktikum Basis Data Semester 3.*
+
